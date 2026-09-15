@@ -1,12 +1,13 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { RouterLink, RouterOutlet } from '@angular/router';
+import { AgentConsole } from './shared/agent-console/agent-console';
+import { CartService } from './services/cart.service';
 
 @Component({
-  imports: [RouterOutlet],
   selector: 'app-root',
-  styleUrl: './app.css',
+  imports: [RouterOutlet, RouterLink, AgentConsole],
   templateUrl: './app.html',
 })
 export class App {
-  protected readonly title = signal('angular-webmcp-shop');
+  protected readonly cartService = inject(CartService);
 }

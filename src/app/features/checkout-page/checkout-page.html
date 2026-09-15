@@ -1,0 +1,79 @@
+<div class="mx-auto max-w-xl px-4 py-8">
+  @if (orderPlaced()) {
+    <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-8 text-center">
+      <p class="text-4xl">🎉</p>
+      <h1 class="mt-2 text-xl font-semibold text-slate-900">Order placed!</h1>
+      <p class="mt-1 text-slate-600">Thanks — your ${{ orderTotal().toFixed(2) }} order is on its way.</p>
+      <a routerLink="/" class="mt-6 inline-block rounded-lg bg-brand-600 px-4 py-2 font-medium text-white hover:bg-brand-700">
+        Continue shopping
+      </a>
+    </div>
+  } @else if (!hasItems()) {
+    <div class="rounded-2xl border border-dashed border-slate-300 py-16 text-center text-slate-500">
+      <p>Your cart is empty — nothing to check out.</p>
+      <a routerLink="/" class="mt-2 inline-block text-brand-600 hover:underline">Browse the catalog</a>
+    </div>
+  } @else {
+    <h1 class="text-2xl font-semibold text-slate-900">Checkout</h1>
+    <p class="mt-1 text-sm text-slate-500">
+      This form's JSON Schema is inferred from its validators. An AI agent can fill and submit it in one call
+      via the <code>submit_checkout</code> WebMCP tool — try inspecting it in the Agent Console below.
+    </p>
+
+    <form [formRoot]="checkoutForm" class="mt-6 space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-slate-700">Full name</label>
+        <input [formField]="checkoutForm.fullName" type="text" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
+        @if (checkoutForm.fullName().touched() && checkoutForm.fullName().invalid()) {
+          <p class="mt-1 text-xs text-red-500">{{ checkoutForm.fullName().errors()[0]?.message }}</p>
+        }
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-slate-700">Email</label>
+        <input [formField]="checkoutForm.email" type="email" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
+        @if (checkoutForm.email().touched() && checkoutForm.email().invalid()) {
+          <p class="mt-1 text-xs text-red-500">{{ checkoutForm.email().errors()[0]?.message }}</p>
+        }
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-slate-700">Address</label>
+        <input [formField]="checkoutForm.address" type="text" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
+        @if (checkoutForm.address().touched() && checkoutForm.address().invalid()) {
+          <p class="mt-1 text-xs text-red-500">{{ checkoutForm.address().errors()[0]?.message }}</p>
+        }
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-700">City</label>
+          <input [formField]="checkoutForm.city" type="text" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
+          @if (checkoutForm.city().touched() && checkoutForm.city().invalid()) {
+            <p class="mt-1 text-xs text-red-500">{{ checkoutForm.city().errors()[0]?.message }}</p>
+          }
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700">Postal code</label>
+          <input [formField]="checkoutForm.postalCode" type="text" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none" />
+          @if (checkoutForm.postalCode().touched() && checkoutForm.postalCode().invalid()) {
+            <p class="mt-1 text-xs text-red-500">{{ checkoutForm.postalCode().errors()[0]?.message }}</p>
+          }
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between border-t border-slate-200 pt-4">
+        <span class="text-sm text-slate-500">Subtotal</span>
+        <span class="text-xl font-bold text-slate-900">${{ cartService.subtotal().toFixed(2) }}</span>
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="checkoutForm().submitting()"
+        class="w-full rounded-lg bg-brand-600 px-4 py-3 font-medium text-white transition hover:bg-brand-700 disabled:opacity-50"
+      >
+        {{ checkoutForm().submitting() ? 'Placing order…' : 'Place order' }}
+      </button>
+    </form>
+  }
+</div>
