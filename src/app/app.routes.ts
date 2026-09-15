@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { PRODUCT_DETAIL_TOOL_PROVIDERS } from './features/product-detail/product-detail.tools';
 
 export const routes: Routes = [
   {
@@ -9,10 +8,6 @@ export const routes: Routes = [
   {
     path: 'product/:id',
     loadComponent: () => import('./features/product-detail/product-detail').then((m) => m.ProductDetail),
-    // Route-scoped WebMCP tools: only registered while this route is active. Requires
-    // `withExperimentalAutoCleanupInjectors()` on `provideRouter` (see app.config.ts) so the
-    // tool is actually unregistered when the shopper navigates away.
-    providers: PRODUCT_DETAIL_TOOL_PROVIDERS,
   },
   {
     path: 'cart',

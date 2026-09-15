@@ -10,14 +10,7 @@ export class ProductService {
 
   readonly categories = computed(() => [...new Set(this._products().map((p) => p.category))].sort());
 
-  /**
-   * Shared filter state — read by the catalog page's search box and category pills, and written
-   * by the `search_products` WebMCP tool (see core/catalog.tools.ts). Because both sides read
-   * the same signals, a tool call visibly updates the on-screen controls and grid, not just the
-   * text returned to the agent. It lives here (root-provided, app-lifetime) rather than as local
-   * component state precisely so the tool can reach it without the catalog page needing to be
-   * open — like `CartService`, just for filter state instead of cart contents.
-   */
+  /** Shared filter state, read by the catalog page's search box and category pills. */
   private readonly _filterQuery = signal('');
   private readonly _filterCategory = signal<string | undefined>(undefined);
   readonly filterQuery = this._filterQuery.asReadonly();

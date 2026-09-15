@@ -25,13 +25,6 @@ export class CheckoutPage {
     postalCode: '',
   });
 
-  /**
-   * `provideExperimentalWebMcpForms()` (see app.config.ts) plus `experimentalWebMcpTool` below is
-   * the fourth WebMCP registration pattern in this app: Angular derives a JSON Schema straight
-   * from these validators (required/email/minLength) and registers a `submit_checkout` tool that
-   * fills every field and submits the form exactly as this page's own submit button does — no
-   * separate tool-definition code to keep in sync with the form.
-   */
   readonly checkoutForm = form(
     this.model,
     (f) => {
@@ -44,16 +37,7 @@ export class CheckoutPage {
       minLength(f.postalCode, 3, { message: 'Postal code looks too short.' });
     },
     {
-      experimentalWebMcpTool: {
-        name: 'submit_checkout',
-        description:
-          "Fill in the shopper's shipping details (full name, email, address, city, postal code) " +
-          'and place the order for everything currently in the cart.',
-      },
       submission: {
-        // `form()` registers this tool as soon as the component is created, regardless of
-        // whether the empty-cart branch in the template is showing — guard here too, or an
-        // agent could "place a $0.00 order" by calling submit_checkout on an empty cart.
         action: async () => {
           if (!this.hasItems()) return;
           this.orderTotal.set(this.cartService.subtotal());
