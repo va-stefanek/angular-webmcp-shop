@@ -60,8 +60,8 @@ The product detail route registers `view_current_product` and `add_current_produ
 its own `providers` array. Combined with `withExperimentalAutoCleanupInjectors()` on
 `provideRouter`, these tools exist **only while that page is open** — navigate to the cart and an
 agent can no longer call `add_current_product_to_cart`, because it's genuinely unregistered, not
-just hidden. Verified in the browser: the Agent Console's tool count goes from 8 → 10 on opening a
-product page, and back to 8 on navigating away.
+just hidden. Verified in the browser: the Agent Console's tool count goes from 9 → 11 on opening a
+product page, and back to 9 on navigating away.
 
 **4. Signal Forms — `src/app/features/checkout-page/checkout-page.ts`**
 `provideExperimentalWebMcpForms()` (in `app.config.ts`) plus `experimentalWebMcpTool: { name,
@@ -77,15 +77,18 @@ inherits exactly the tedium a human has, which is why calling tools can feel poi
 a single `search_products` round trip is genuinely slower than typing in the search box yourself.
 
 The comparison that matters isn't *agent vs. human*, it's *agent with tools vs. agent without
-them*. Without WebMCP an agent drives the page by screenshotting, guessing coordinates and
-simulating clicks — slow, and brittle the moment the CSS changes. Filling this app's checkout
-form that way took a dozen-plus round trips and several mis-clicks; `submit_checkout` does it in
-one call, first try, with the real validation running.
+them*. Without WebMCP an agent drives the page from the outside — a screenshot or a DOM dump,
+a guess at which element you meant, a click, then another read to find out what happened. Reading
+the markup instead of the pixels helps a little and changes nothing fundamental: either way it is
+reconstructing your application from whatever the UI happened to render, and it breaks when you
+restructure a component. Filling this app's checkout form that way took a dozen-plus round trips
+and several mis-clicks; `submit_checkout` does it in one call, first try, with the real validation
+running.
 
 Tools earn their keep where step count or expressiveness beats a human's mouse:
 
 - **Batches** — `add_products_to_cart` takes a list, so "2 of each Audio product" is one call
-  instead of nine clicks. Note it deliberately coexists with the single-item `add_to_cart`, and
+  instead of six clicks. Note it deliberately coexists with the single-item `add_to_cart`, and
   both descriptions say which to prefer; overlapping tools need that disambiguation written into
   the description, since it's all the model has to choose between them.
 - **Queries the UI can't express** — "best rating-per-dollar in each category" has no filter and

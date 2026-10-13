@@ -63,7 +63,7 @@ export class CartService {
 
     /**
      * The tool worth designing for: one call replaces a whole sequence of UI interactions
-     * ("add 2 of each of the three Audio products" = 9 clicks across the catalog, or 1 call).
+     * ("add 2 of each of the three Audio products" = 6 clicks across the catalog, or 1 call).
      * Tools should be shaped around the *task* an agent is asked to perform, not around the
      * individual buttons a human happens to click — mirroring the UI one-to-one gives agents
      * the same tedium a human has, which is most of why calling tools can feel pointlessly slow.

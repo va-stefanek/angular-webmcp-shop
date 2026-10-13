@@ -21,6 +21,6 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('header')?.textContent).toContain('Aurora Goods');
+    expect(compiled.querySelector('header')?.textContent).toContain('Mateusz Goods');
   });
 });
